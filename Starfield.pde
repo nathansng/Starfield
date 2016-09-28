@@ -5,14 +5,14 @@ public void setup() {
 	particles = new Particle [500];
 
 	for (int i = 0; i < particles.length; i ++) {
-		particles[i] = new NormalParticle (width / 2, height / 2);
+		particles[i] = new NormalParticle ();
 	}
 
-	//particles[0] = new JumboParticle(width / 2, height / 2);
+	particles[1] = new Jumbo();
 }
 
 public void draw() {
-	background(100);
+	background(0);
 
 	stroke(0);
 	fill(255);
@@ -28,13 +28,13 @@ class NormalParticle implements Particle{
 	double myAngle, mySpeed, myX, myY, mySize;
 	int myColor;
 
-	NormalParticle(double x, double y) {
+	NormalParticle() {
 		double startSize = 0.01;
 		mySize = dist((float) myX, (float) myY, (float) width/2, (float) height/2) * startSize;
-		myX = x;
-		myY = y;
+		myX = width / 2;
+		myY = height / 2;
 		myAngle = Math.PI * 2 * Math.random();
-		mySpeed = Math.random() * 5 + 5;
+		mySpeed = Math.random() * 5 + 2;
 
 		myColor = color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255));
 	}
@@ -42,12 +42,13 @@ class NormalParticle implements Particle{
 	public void move () {
 		myX = myX + (Math.cos(myAngle) * mySpeed);
 		myY = myY + (Math.sin(myAngle) * mySpeed);
+		myAngle += 0.02;
 	}
 
 	public void show () {
 		fill(myColor);
 		ellipse((float)myX, (float)myY, 10, 10);
-		mySize += 0.01;
+		mySize += 0.1;
 	}
 
 	public void respawn () {
@@ -57,7 +58,7 @@ class NormalParticle implements Particle{
 			myX = width / 2;
 			myY = height / 2;
 			myAngle = Math.random() * 2 * PI;
-			
+			mySpeed = Math.random() * 5 + 2;
 		} 
 	}
 }
@@ -68,35 +69,41 @@ interface Particle {
 	public void respawn();
 }
 
-class JumboParticle implements Particle{
-	double myAngle, mySpeed, myX, myY;
-	int myColor;
+class Jumbo extends NormalParticle{
+	double size, sizeX, sizeY;
 
-	JumboParticle(double x, double y) {
-		myX = x;
-		myY = y;
-		myAngle = Math.PI * 2 * Math.random();
-		mySpeed = Math.random() * 5 + 5;
-
-		myColor = color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255));
-	}
-
-	public void show() {
+	void show () {
 		fill(myColor);
-		ellipse((float)myX, (float)myY, 30, 30);
+		sizeX = width / 2;
+		sizeY = height / 2;
+		size = (Math.abs(myX - sizeX) + Math.abs(myY - sizeY)) * 0.4;
+		ellipse((float)myX, (float)myY, (float)size, (float)size);
 	}
 
-	public void move() {
-		myX = myX + (Math.cos(myAngle) * mySpeed);
-		myY = myY + (Math.sin(myAngle) * mySpeed);
+	void respawn () {
+		double size = mySize /2;
+		if (myX < 0 - size || myX > width+ size || myY < 0 - size || myY > height + size) {
+			mySize = 0;
+			myX = width / 2;
+			myY = height / 2;
+			myAngle = Math.random() * 2 * PI;
+			mySpeed = Math.random() * 5 + 2;
+		} 
+	}
+
+}
+
+class OddballParticle implements Particle{
+	public void show() {
+
+	}
+
+	public void move () {
+
 	}
 
 	public void respawn () {
 
 	}
-}
-
-class OddballParticle {
-	//your code here
 }
 
