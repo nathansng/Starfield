@@ -1,14 +1,14 @@
 Particle [] particles;
 
 public void setup() {
-	size(400, 400);
+	size(700, 700);
 	particles = new Particle [500];
 
 	for (int i = 0; i < particles.length; i ++) {
-		particles[i] = new NormalParticle (200, 200);
+		particles[i] = new NormalParticle (width / 2, height / 2);
 	}
 
-	particles[0] = new JumboParticle(200, 200);
+	//particles[0] = new JumboParticle(width / 2, height / 2);
 }
 
 public void draw() {
@@ -18,16 +18,19 @@ public void draw() {
 	fill(255);
 
 	for (int i = 0; i < particles.length; i ++) {
+		particles[i].respawn();
 		particles[i].move();
 		particles[i].show();
 	}
 }
 
 class NormalParticle implements Particle{
-	double myAngle, mySpeed, myX, myY;
+	double myAngle, mySpeed, myX, myY, mySize;
 	int myColor;
 
 	NormalParticle(double x, double y) {
+		double startSize = 0.01;
+		mySize = dist((float) myX, (float) myY, (float) width/2, (float) height/2) * startSize;
 		myX = x;
 		myY = y;
 		myAngle = Math.PI * 2 * Math.random();
@@ -44,15 +47,16 @@ class NormalParticle implements Particle{
 	public void show () {
 		fill(myColor);
 		ellipse((float)myX, (float)myY, 10, 10);
+		mySize += 0.01;
 	}
 
 	public void respawn () {
 		double size = mySize /2;
-		if (x < 0 - size || x > width+ size || y < 0 - size || y > height + size) {
+		if (myX < 0 - size || myX > width+ size || myY < 0 - size || myY > height + size) {
 			mySize = 0;
-			myX = 200;
-			myY = 200;
-			angle = Math.random * 2 * PI;
+			myX = width / 2;
+			myY = height / 2;
+			myAngle = Math.random() * 2 * PI;
 			
 		} 
 	}
@@ -61,6 +65,7 @@ class NormalParticle implements Particle{
 interface Particle {
 	public void show();
 	public void move();
+	public void respawn();
 }
 
 class JumboParticle implements Particle{
@@ -84,6 +89,10 @@ class JumboParticle implements Particle{
 	public void move() {
 		myX = myX + (Math.cos(myAngle) * mySpeed);
 		myY = myY + (Math.sin(myAngle) * mySpeed);
+	}
+
+	public void respawn () {
+
 	}
 }
 
