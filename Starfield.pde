@@ -2,7 +2,7 @@ Particle [] particles;
 
 public void setup() {
 	size(700, 700);
-	particles = new Particle [500];
+	particles = new Particle [1000];
 
 	for (int i = 0; i < particles.length; i ++) {
 		particles[i] = new NormalParticle ();
@@ -25,7 +25,7 @@ public void draw() {
 }
 
 class NormalParticle implements Particle{
-	double myAngle, mySpeed, myX, myY, mySize;
+	double myAngle, mySpeed, myX, myY, mySize, originalX, originalY;
 	int myColor;
 
 	NormalParticle() {
@@ -35,6 +35,8 @@ class NormalParticle implements Particle{
 		myY = height / 2;
 		myAngle = Math.PI * 2 * Math.random();
 		mySpeed = Math.random() * 5 + 2;
+		originalX = width/ 2;
+		originalY = height / 2;
 
 		myColor = color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255));
 	}
@@ -43,6 +45,10 @@ class NormalParticle implements Particle{
 		myX = myX + (Math.cos(myAngle) * mySpeed);
 		myY = myY + (Math.sin(myAngle) * mySpeed);
 		myAngle += 0.02;
+
+		if (myX == width / 2 && myY == height / 2) {
+			myColor = color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255));
+		}
 	}
 
 	public void show () {
@@ -54,9 +60,10 @@ class NormalParticle implements Particle{
 	public void respawn () {
 		double size = mySize /2;
 		if (myX < 0 - size || myX > width+ size || myY < 0 - size || myY > height + size) {
+			myColor = color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255));
 			mySize = 0;
-			myX = width / 2;
-			myY = height / 2;
+			myX = originalX;
+			myY = originalY;
 			myAngle = Math.random() * 2 * PI;
 			mySpeed = Math.random() * 5 + 2;
 		} 
@@ -72,20 +79,22 @@ interface Particle {
 class Jumbo extends NormalParticle{
 	double size, sizeX, sizeY;
 
-	void show () {
+	public void show () {
 		fill(myColor);
 		sizeX = width / 2;
 		sizeY = height / 2;
 		size = (Math.abs(myX - sizeX) + Math.abs(myY - sizeY)) * 0.4;
 		ellipse((float)myX, (float)myY, (float)size, (float)size);
+		System.out.println(size);
 	}
 
-	void respawn () {
+	public void respawn () {
 		double size = mySize /2;
-		if (myX < 0 - size || myX > width+ size || myY < 0 - size || myY > height + size) {
+		if (myX < -200 || myX > width + 200 || myY < -200 || myY > height + 200) {
+			myColor = color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255));
 			mySize = 0;
-			myX = width / 2;
-			myY = height / 2;
+			myX = originalX;
+			myY = originalY;
 			myAngle = Math.random() * 2 * PI;
 			mySpeed = Math.random() * 5 + 2;
 		} 
