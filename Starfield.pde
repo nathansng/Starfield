@@ -86,6 +86,8 @@ class Jumbo extends NormalParticle{
 	public void show () {
 		noStroke();
 		fill(myColor);
+
+		mySize = dist((float) myX, (float) myY, (float) width/2, (float) height/2) * startSize;
 		sizeX = width / 2;
 		sizeY = height / 2;
 		size = (Math.abs(myX - sizeX) + Math.abs(myY - sizeY)) * 0.4;
