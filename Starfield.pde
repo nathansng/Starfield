@@ -8,8 +8,10 @@ public void setup() {
 		particles[i] = new NormalParticle ();
 	}
 
-	particles[0] = new OddballParticle();
+	particles[0] = new Jumbo();
 	particles[1] = new Jumbo();
+	particles[2] = new OddballParticle();
+	particles[3] = new OddballParticle();
 }
 
 public void draw() {
@@ -39,19 +41,13 @@ class NormalParticle implements Particle{
 		originalX = width/ 2;
 		originalY = height / 2;
 
-		myColor = color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255));
+		myColor = color((int)(Math.random() * 255) + 50, (int)(Math.random() * 255) + 50, (int)(Math.random() * 255) + 50);
 	}
 
 	public void move () {
 		myX = myX + (Math.cos(myAngle) * mySpeed);
 		myY = myY + (Math.sin(myAngle) * mySpeed);
 		myAngle += 0.02;
-
-
-
-		if (myX == width / 2 && myY == height / 2) {
-			myColor = color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255));
-		}
 	}
 
 	public void show () {
@@ -116,6 +112,7 @@ class Jumbo extends NormalParticle{
 
 class OddballParticle implements Particle{
 	double myAngle, mySpeed, myX, myY, mySize, originalX, originalY, startSize;
+	int myColor;
 
 
 	OddballParticle () {
@@ -127,6 +124,8 @@ class OddballParticle implements Particle{
 		mySpeed = Math.random() * 5 + 2;
 		originalX = width/ 2;
 		originalY = height / 2;
+
+		myColor = color((int)(Math.random() * 255) + 50, (int)(Math.random() * 255) + 50, (int)(Math.random() * 255) + 50);
 	}
 
 	public void show() {
@@ -137,7 +136,7 @@ class OddballParticle implements Particle{
 		fill(255);
 		arc((float)myX, (float)myY, (float)mySize * 3, (float)mySize * 4, PI, TWO_PI);
 
-		fill(100);
+		fill(myColor);
 		ellipse((float)myX, (float)myY, (float)mySize * 4, (float)mySize * 2);
 	}
 
@@ -145,11 +144,13 @@ class OddballParticle implements Particle{
 		myX = myX + (Math.cos(myAngle) * mySpeed);
 		myY = myY + (Math.sin(myAngle) * mySpeed);
 		myAngle -= 0.02;
+		mySpeed -= 0.02;
 	}
 
 	public void respawn () {
 		double size = mySize / 2;
 		if (myX < -200 || myX > width + 200 || myY < -200 || myY > height + 200) {
+			myColor = color((int)(Math.random() * 255) + 50, (int)(Math.random() * 255) + 50, (int)(Math.random() * 255) + 50);
 			mySize = 0;
 			myX = originalX;
 			myY = originalY;
