@@ -2,7 +2,7 @@ Particle [] particles;
 
 public void setup() {
 	size(700, 700);
-	particles = new Particle [1000];
+	particles = new Particle [500];
 
 	for (int i = 0; i < particles.length; i ++) {
 		particles[i] = new NormalParticle ();
@@ -26,11 +26,11 @@ public void draw() {
 }
 
 class NormalParticle implements Particle{
-	double myAngle, mySpeed, myX, myY, mySize, originalX, originalY;
+	double myAngle, mySpeed, myX, myY, mySize, originalX, originalY, startSize;
 	int myColor;
 
 	NormalParticle() {
-		double startSize = 0.01;
+		startSize = 0.05;
 		mySize = dist((float) myX, (float) myY, (float) width/2, (float) height/2) * startSize;
 		myX = width / 2;
 		myY = height / 2;
@@ -47,6 +47,8 @@ class NormalParticle implements Particle{
 		myY = myY + (Math.sin(myAngle) * mySpeed);
 		myAngle += 0.02;
 
+
+
 		if (myX == width / 2 && myY == height / 2) {
 			myColor = color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255));
 		}
@@ -55,8 +57,8 @@ class NormalParticle implements Particle{
 	public void show () {
 		noStroke();
 		fill(myColor);
-		ellipse((float)myX, (float)myY, 10, 10);
-		mySize += 0.1;
+		mySize = dist((float) myX, (float) myY, (float) width/2, (float) height/2) * startSize;
+		ellipse((float)myX, (float)myY, (float)mySize, (float)mySize);
 	}
 
 	public void respawn () {
@@ -111,12 +113,11 @@ class Jumbo extends NormalParticle{
 }
 
 class OddballParticle implements Particle{
-	double myAngle, mySpeed, myX, myY, mySize, originalX, originalY;
-	int myColor;
+	double myAngle, mySpeed, myX, myY, mySize, originalX, originalY, startSize;
 
 
 	OddballParticle () {
-		double startSize = 0.01;
+		startSize = 0.1;
 		mySize = dist((float) myX, (float) myY, (float) width/2, (float) height/2) * startSize;
 		myX = width / 2;
 		myY = height / 2;
@@ -124,25 +125,29 @@ class OddballParticle implements Particle{
 		mySpeed = Math.random() * 5 + 2;
 		originalX = width/ 2;
 		originalY = height / 2;
-
-		myColor = color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255));
 	}
 
 	public void show() {
-		fill(myColor);
 		noStroke();
 
-		ellipse((int)myX, (int)myY, (int)mySize, (int)mySize * 2);
+		mySize = dist((float) myX, (float) myY, (float) width/2, (float) height/2) * startSize;
+
+		fill(255);
+		arc((float)myX, (float)myY, (float)mySize * 3, (float)mySize * 4, PI, TWO_PI);
+
+		fill(100);
+		ellipse((float)myX, (float)myY, (float)mySize * 4, (float)mySize * 2);
 	}
 
 	public void move () {
-
+		myX = myX + (Math.cos(myAngle) * mySpeed);
+		myY = myY + (Math.sin(myAngle) * mySpeed);
+		myAngle -= 0.02;
 	}
 
 	public void respawn () {
-		double size = mySize /2;
-		if (myX < 0 - size || myX > width+ size || myY < 0 - size || myY > height + size) {
-			myColor = color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255));
+		double size = mySize / 2;
+		if (myX < -200 || myX > width + 200 || myY < -200 || myY > height + 200) {
 			mySize = 0;
 			myX = originalX;
 			myY = originalY;
