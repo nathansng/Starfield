@@ -2,7 +2,7 @@ Particle [] particles;
 
 public void setup() {
 	size(700, 700);
-	particles = new Particle [500];
+	particles = new Particle [750];
 
 	for (int i = 0; i < particles.length; i ++) {
 		particles[i] = new NormalParticle ();
