@@ -1,6 +1,7 @@
 Particle [] particles;
 
 int frame = 20;
+int playingAround = 0;
 
 public void setup() {
 	size(700, 700);
@@ -48,11 +49,19 @@ public void draw() {
 	} else {
 		frameRate(60);
 	}
+
+	if (keyPressed == true && key == 's') {
+		playingAround = 1;
+	} else if (keyPressed == true && key == 'd') {
+		playingAround = 2;
+	} else {
+		playingAround = 0;
+	}
 }
 
 
 class NormalParticle implements Particle{
-	double myAngle, mySpeed, myX, myY, mySize, originalX, originalY, startSize;
+	double myAngle, mySpeed, myX, myY, mySize, originalX, originalY, startSize, originalSpeed;
 	int myColor;
 
 	NormalParticle() {
@@ -62,6 +71,7 @@ class NormalParticle implements Particle{
 		myY = height / 2;
 		myAngle = Math.PI * 2 * Math.random();
 		mySpeed = Math.random() * 5 + 2;
+		originalSpeed = mySpeed;
 		originalX = width/ 2;
 		originalY = height / 2;
 
@@ -72,6 +82,15 @@ class NormalParticle implements Particle{
 		myX = myX + (Math.cos(myAngle) * mySpeed);
 		myY = myY + (Math.sin(myAngle) * mySpeed);
 		myAngle += 0.02;
+
+		if (playingAround == 1) {
+			mySpeed += 0.1;
+		} else if (playingAround == 2) {
+			mySpeed -= 0.1;
+		} else {
+			mySpeed = originalSpeed;
+		}
+		
 	}
 
 	public void show () {
@@ -90,6 +109,7 @@ class NormalParticle implements Particle{
 			myY = originalY;
 			myAngle = Math.random() * 2 * PI;
 			mySpeed = Math.random() * 5 + 2;
+			originalSpeed = mySpeed;
 		} 
 	}
 }
