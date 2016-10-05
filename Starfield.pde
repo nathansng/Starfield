@@ -1,5 +1,7 @@
 Particle [] particles;
 
+int frame = 20;
+
 public void setup() {
 	size(700, 700);
 	frameRate(60);
@@ -28,8 +30,21 @@ public void draw() {
 		particles[i].show();
 	}
 
+	if (keyPressed == true && key == '1') {
+		frame = 15;
+	}
+	if (keyPressed == true && key == '2') {
+		frame = 20;
+	}
+	if (keyPressed == true && key == '3') {
+		frame = 30;
+	} 
+	if (keyPressed == true && key == '4') {
+		frame = 40;
+	}
+
 	if (keyPressed == true && key == 32) {
-		frameRate(20);
+		frameRate(frame);
 	} else {
 		frameRate(60);
 	}
