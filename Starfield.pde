@@ -2,6 +2,8 @@ Particle [] particles;
 
 public void setup() {
 	size(700, 700);
+	frameRate(60);
+
 	particles = new Particle [750];
 
 	for (int i = 0; i < particles.length; i ++) {
@@ -25,7 +27,14 @@ public void draw() {
 		particles[i].move();
 		particles[i].show();
 	}
+
+	if (keyPressed == true && key == 32) {
+		frameRate(20);
+	} else {
+		frameRate(60);
+	}
 }
+
 
 class NormalParticle implements Particle{
 	double myAngle, mySpeed, myX, myY, mySize, originalX, originalY, startSize;
