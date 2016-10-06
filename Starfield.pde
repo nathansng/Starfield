@@ -50,7 +50,11 @@ public void draw() {
 		frameRate(60);
 	}
 
-	if (keyPressed == true && key == 's') {
+	if (keyPressed == true && key == 'f') {
+		playingAround = 4;
+	} else if (keyPressed == true && key == 'a') {
+		playingAround = 3;
+	} else if (keyPressed == true && key == 's') {
 		playingAround = 1;
 	} else if (keyPressed == true && key == 'd') {
 		playingAround = 2;
@@ -81,12 +85,18 @@ class NormalParticle implements Particle{
 	public void move () {
 		myX = myX + (Math.cos(myAngle) * mySpeed);
 		myY = myY + (Math.sin(myAngle) * mySpeed);
-		myAngle += 0.02;
+		myAngle += 0.0;
 
-		if (playingAround == 1) {
+		if (playingAround == 4) {
 			mySpeed += 0.1;
+			myAngle -= 0.1;
+		} else if (playingAround == 3) {
+			mySpeed += 0.1;
+			myAngle += 0.1;
 		} else if (playingAround == 2) {
 			mySpeed -= 0.1;
+		} else if (playingAround == 1) {
+			mySpeed += 0.2;
 		} else {
 			mySpeed = originalSpeed;
 		}
